@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Malicious URL & IP Tracker</title>
+  <style>
+    body { font-family: Arial, sans-serif; text-align: center; padding: 20px; }
+    input { width: 300px; padding: 10px; margin: 10px; }
+    button { padding: 10px 15px; cursor: pointer; }
+    pre { background: #f4f4f4; padding: 10px; overflow: auto; text-align: left; }
+  </style>
+</head>
+<body>
+  <h2>Malicious URL & IP Tracker</h2>
+  <input type="text" id="url" placeholder="Enter URL to scan" />
+  <button onclick="scanURL()">Scan</button>
+  <pre id="result">Results will appear here...</pre>
+
+  <script>
+    async function scanURL() {
+      const urlInput = document.getElementById('url').value;
+      const apiKey = "YOUR_API_KEY_HERE"; // Replace with your VirusTotal API Key
+
+      if (!urlInput) {
+        alert("Please enter a URL!");
+        return;
+      }
+
+      try {
+        document.getElementById('result').innerText = "Submitting URL for scanning...";
+
+        // Submit URL to VirusTotal
+        let response = await fetch("https://www.virustotal.com/api/v3/urls", {
+          method: "POST",
+          headers: {
+            "x-apikey": apiKey,
+            "Content-Type": "application/x-www-form-urlencoded"
+          },
+          body: `url=${encodeURIComponent(urlInput)}`
+        });
+
+        let result = await response.json();
+        if (!result.data || !result.data.id) {
+          document.getElementById('result').innerText = "Error: Unable to submit URL.";
+          return;
+        }
+
+        const scanId = result.data.id;
+        document.getElementById('result').innerText = "Scanning... Please wait.";
+
+        // Polling for results
+        let retries = 6;
+        while (retries > 0) {
+          await new Promise(resolve => setTimeout(resolve, 5000)); // Wait 5 sec
+
+          response = await fetch(`https://www.virustotal.com/api/v3/analyses/${scanId}`, {
+            method: "GET",
+            headers: { "x-apikey": apiKey }
+          });
+
+          result = await response.json();
+
+          if (result.data.attributes.status === "completed") {
+            await displayResults(result, urlInput);
+            return;
+          }
+
+          retries--;
+        }
+
+        document.getElementById('result').innerText = "Scan is taking too long. Try again later.";
+      } catch (error) {
+        console.error(error);
+        document.getElementById('result').innerText = "Error scanning URL!";
+      }
+    }
+
+    async function displayResults(scanData, urlInput) {
+      let stats = scanData.data.attributes.stats;
+      let summary = `🔹 Malicious: ${stats.malicious}\n🔹 Suspicious: ${stats.suspicious}\n🔹 Harmless: ${stats.harmless}\n🔹 Undetected: ${stats.undetected}`;
+
+      let detailedResults = Object.values(scanData.data.attributes.results)
+        .map(entry => `${entry.engine_name}: ${entry.result}`)
+        .join("\n");
+
+      let resultText = `Scan Completed:\n${summary}\n\nDetails:\n${detailedResults}`;
+
+      try {
+        // Fetch the IP and location of the domain
+        let domain = new URL(urlInput).hostname;
+        let ipInfo = await fetch(`https://ipinfo.io/${domain}/json?token=abc8d59631762f`);
+        let ipData = await ipInfo.json();
+
+        resultText += `\n\n🌍 Hosting Server Info:\n🔹 IP Address: ${ipData.ip}\n🔹 Location: ${ipData.city}, ${ipData.region}, ${ipData.country}\n🔹 ISP: ${ipData.org}`;
+      } catch (err) {
+        resultText += "\n\n🌍 Hosting Server Info: Unable to fetch IP info.";
+      }
+
+      document.getElementById('result').innerText = resultText;
+    }
+  </script>
+</body>
+</html>

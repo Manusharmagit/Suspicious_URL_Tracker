@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="Malicious URL and IP Tracker – Scan URLs & IPs for threats and get real-time cybersecurity news.">
+  <meta name="keywords" content="cybersecurity, URL scanner, IP tracker, malicious URL, online security">
+  <meta name="author" content="Your Name">
+  <title>Malicious URL and IP Tracker</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Poppins:wght@600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+  <header>
+    <div class="container nav-container">
+      <h1>Malicious URL & IP Tracker</h1>
+      <nav>
+        <button class="nav-toggle" aria-label="Toggle navigation"><i class="fas fa-bars"></i></button>
+        <ul class="nav-menu">
+          <li><a href="#home">Home</a></li>
+          <li><a href="#scan">Scan</a></li>
+          <li><a href="#blog">Blog</a></li>
+          <li><a href="#resources">Resources</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#contact">Contact</a></li>
+          <li><a href="#scan" class="btn-dashboard">Dashboard</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section id="home" class="hero">
+      <div class="container">
+        <h2>Protect Yourself Online</h2>
+        <p>Scan URLs and IPs for threats and stay up‑to‑date with cybersecurity news.</p>
+        <a href="#scan" class="cta-button">Scan Now</a>
+      </div>
+    </section>
+
+    <section id="scan" class="scan-section">
+      <div class="container">
+        <h2>Scan URL or IP Address</h2>
+        <form id="scanForm">
+          <input type="text" id="url" placeholder="Enter URL or IP Address" required>
+          <button type="submit">🔍 Scan</button>
+        </form>
+        <div id="result" class="result-box hidden"></div>
+      </div>
+    </section>
+
+    <section id="blog" class="blog-section">
+      <div class="container">
+        <h2>Latest Cybersecurity News</h2>
+        <div class="blog-posts" id="blogPosts">Loading...</div>
+      </div>
+    </section>
+
+    <section id="resources" class="resources-section">
+      <div class="container">
+        <h2>Cybersecurity Resources</h2>
+        <div class="resource-cards">
+          <div class="card">
+            <i class="fas fa-shield-alt"></i><h3>Best Practices</h3>
+            <p>Learn essential practices to stay secure online.</p><a href="#">Read More</a>
+          </div>
+          <div class="card">
+            <i class="fas fa-envelope"></i><h3>Phishing Detection</h3>
+            <p>Spot phishing emails with confidence.</p><a href="#">Read More</a>
+          </div>
+          <div class="card">
+            <i class="fas fa-lock"></i><h3>Password Security</h3>
+            <p>Create and manage strong passwords.</p><a href="#">Read More</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="about" class="about-section">
+      <div class="container">
+        <h2>About Us</h2>
+        <p>We're cybersecurity enthusiasts helping you stay safe online with tools and guidance.</p>
+      </div>
+    </section>
+
+    <section id="contact" class="contact-section">
+      <div class="container">
+        <h2>Contact Us</h2>
+        <form id="contactForm">
+          <input type="text" placeholder="Your Name" required>
+          <input type="email" placeholder="Your Email" required>
+          <textarea placeholder="Your Message" required></textarea>
+          <button type="submit">Send</button>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>&copy; 2025 Malicious URL & IP Tracker. All rights reserved.</p>
+      <div class="social-links">
+        <a href="#"><i class="fab fa-facebook"></i></a>
+        <a href="#"><i class="fab fa-twitter"></i></a>
+        <a href="#"><i class="fab fa-linkedin"></i></a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
